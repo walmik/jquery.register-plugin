@@ -2,15 +2,26 @@
 <html>
 <head>
 	<title>jQuery Plugin Utility</title>
+	<style>
+	.a, .b {
+		width: 200px;
+		float: left;
+		margin: 5px;
+		background: #f2f2f2;
+	}
+	</style>
 </head>
 <body>
 
 	<div class='a'>
-		A
+		<p>div (class='a')</p>
+		<button class='btn'>A</button>
 	</div>
 
 	<div class='b'>
-		B
+		<p>div (class='b')</p>
+		<button class='btn1'>B</button> 
+		<button class='btn2'>Call method from A</button>
 	</div>
 
 	<script src='jquery.js'></script>
