@@ -1,6 +1,6 @@
 (function($){
 
-	var obj2Func = function(obj) {
+	var getPluginFunction = function(obj) {
 
 		// Return a function which takes two params: DOM element and options. 
 		return function(element, options) {
@@ -34,6 +34,44 @@
 				this[item] = obj[item]; 
 			}
 
+
+			// Wire up events and event handlers
+			for (var action in this.events) {
+				
+				//the action will be in the format: 'click>.someClass'
+				//split it on > and bind the second item(element) to respond to the first item(event)
+				var split = action.split('>');	//split on a greater than sign
+				var evt = $.trim(split[0]);
+				var element = $.trim(split[1]);
+
+				/**
+				 * The value of the action could be a reference to a function or a function itself
+				 * If it's a reference, it'll be a string like this:
+				 * 'click>.someClass' : 'onClickSomeClass'
+				 * ^ which means, onClickSomeClass exists as a function in the object
+				 * OR
+				 * The value of the action could be the function directly, 
+				 * in which case we will bind it without directly without trying to look for it in the obj
+				*/
+				if(typeof this.events[action] == 'string') {
+					//check if the function refered to by the string exists and use it
+					if (this[this.events[action]]) {
+						//proceeding in favor of bind directly on element (passing 'this' as self in the data object of the event)
+						this.$(element).on(evt, {self: this}, this[this.events[action]].bind(this));
+						//the following will bind on this.$el and reference it to element
+						//this.$el.on(evt, element, this.events[action].bind(this));
+					} else {
+						console.log('Eventmap Action "' + this.events[action] + '" is a string but cannot be found in the obj as a function.');
+					}
+				} else {
+					//the action value is a function
+					//proceeding in favor of bind directly on element
+					this.$(element).on(evt, this[this.events[action]].bind(this));
+					//the following will bind on this.$el and reference it to element
+					//this.$el.on(evt, element, this.events[action].bind(this));
+				}
+			}
+
 		  
 			/*
 				Call an init method if it exists
@@ -52,7 +90,7 @@
 		 * Expand the Object literal into a plugin function 
 		 * usually created using the factory design pattern
 		 */
-		var PluginFunction = obj2Func(PluginObject);
+		var PluginFunction = getPluginFunction(PluginObject);
 
 		$.fn[pluginName] = function(options, params) {
 			return this.each(function() {
