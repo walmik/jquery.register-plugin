@@ -25,4 +25,4 @@ Now `colorMeRed` is available as a standard jQuery plugin ready to be applied on
 
 ## Documentation
 
-Please refer to the [wiki](https://github.com/walmik/jquery.register-plugin/wiki/jQuery.registerPlugin) to learn more about this utility or [read the article](http://www.walmik.com/2014/08/a-whole-new-way-of-writing-jquery-plugins/) that explains how this works.
+Please refer to the [wiki](https://github.com/walmik/jquery.register-plugin/wiki/jQuery.registerPlugin) to learn more about this utility.
